@@ -1,6 +1,6 @@
 #bài này giải hệ phương trình x+2y=5 và 3x+4y =6
 # Yêu cầu hoàn chỉnh lại đoạn code
-#để có 1 app giải hệ phương trình có n phương trình n ẩn
+#để có 1 app giải hệ phương trình có n phương trình n ẩn 
 import numpy as np
 
 # Ma trận hệ số A
