@@ -2,13 +2,24 @@
 # Yêu cầu hoàn chỉnh lại đoạn code
 #để có 1 app giải hệ phương trình có n phương trình n ẩn
 import numpy as np
-A = np.array([(2,2),(3,5)])
-B = np.array([5,8])
-C  = np.linalg.inv(A) # tạo ma trận nghich đảo
+
+# Ma trận hệ số A
+A = np.array([[1, 2], [3, 4]])
+
+# Véc-tơ b
+B = np.array([5, 6])
+
+# Tìm ma trận nghịch đảo của A
+C = np.linalg.inv(A)
+
+# Tìm nghiệm của hệ phương trình
+X = np.dot(C, B)
+
+print('Ma trận A:')
 print(A)
+print('Véc-tơ B:')
 print(B)
+print('Ma trận nghịch đảo của A:')
 print(C)
-X = np.dot(C,B)
-print('Nghiem cua he:',X)
-print('Hello nhom 3')
-print('abcxyz')
+print('Nghiệm của hệ phương trình:')
+print(X)
