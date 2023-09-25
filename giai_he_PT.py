@@ -91,7 +91,7 @@ def tao_cua_so():
     # Tạo cửa sổ giao diện
     cua_so = tk.Tk()
     cua_so.title("GIAI PT NHOM 3")
-    cua_so.geometry("1000x1000")
+    cua_so.geometry("720x500")
 
     # Nhập số hệ phương trình
     nhan_n = tk.Label(cua_so, text="Nhập số hệ phương trình (n):")
