@@ -91,14 +91,13 @@ def tao_cua_so():
     # Tạo cửa sổ giao diện
     cua_so = tk.Tk()
     cua_so.title("GIAI PT NHOM 3")
-    cua_so.geometry("720x500")
+    cua_so.geometry("1000x1000")
 
     # Nhập số hệ phương trình
     nhan_n = tk.Label(cua_so, text="Nhập số hệ phương trình (n):")
     nhan_n.pack()
-    
-    nhan_n_text = tk.Text(cua_so, height=1, width=30)
-    nhan_n_text.pack()
+    nhap_n = tk.Entry(cua_so)
+    nhap_n.pack()
 
     # Tạo danh sách các biến và hằng số
     nhap_bien = []
