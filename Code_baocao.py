@@ -9,16 +9,49 @@ df = pd.read_csv('diemPython.csv', index_col=0, header=0)
 in_data = array(df.iloc[:, :])
 def hienthidanhsach():
     result_text.insert(END, "Danh sách sinh viên:\n")
-    result_text.insert(END, str(in_data) + "\n\n")
+    result_text.insert(END, df.to_string(index=False) + "\n\n")
 
 def tongsinhvien():
     sv = in_data[:, 1]
-    tongsv=np.sum(sv)
-    result_text.insert(END, "Tổng số sinh viên đi thi:\n")
-    result_text.insert(END, str(tongsv) + "\n\n")
+    tongsv = np.sum(sv)
+    result_text.insert(END, "Tổng số sinh viên đi thi: " + str(tongsv) + " sinh viên\n")
 
+    svtruot = in_data[:, 10]
+    tongsvtruot = np.sum(svtruot)
+    tongsvdat = tongsv - tongsvtruot
+
+    percent_dat = (tongsvdat / tongsv) * 100
+    percent_truot = (tongsvtruot / tongsv) * 100
+
+    result_text.insert(END, "Tổng số sinh viên qua môn: " + str(tongsvdat) + " sinh viên (" + str(percent_dat) + "%)\n")
+    result_text.insert(END, "Tổng số sinh viên trượt môn: " + str(tongsvtruot) + " sinh viên (" + str(percent_truot) + "%)\n\n")
+    categories = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9']
+    values1 = np.sum(in_data[0:9, 2:10], axis=1).flatten()
+    values2 = in_data[:, 10]
+    total_values = values1 + values2
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 18))
+
+    ax1.bar(categories, values1, color='green', label="Sinh viên đạt")
+    ax1.bar(categories, values2, bottom=values1, color='red', label="Sinh viên trượt")
+
+    for i, (v1, v2, tv) in enumerate(zip(values1, values2, total_values)):
+        ax1.text(i, v1/2, str(v1), ha='center', va='bottom', color='white', fontweight='bold')
+        ax1.text(i, v1 + v2/2, str(v2), ha='center', va='bottom', color='white', fontweight='bold')
+        ax1.text(i, v1 + v2, str(tv), ha='center', va='bottom', color='black', fontweight='bold')
+
+    ax1.set_title('Biểu đồ số sinh viên trong các lớp')
+    ax1.set_ylabel('Số sinh viên')
+    ax1.legend(loc='upper right')
+
+    ax2.pie(total_values, labels=categories, autopct='%1.1f%%')
+    ax2.set_title('Biểu đồ tỷ lệ sinh viên theo lớp')
+
+    plt.subplots_adjust(hspace=0.5)
+    plt.show()
 
 def sosinhvientruot():
+
     svtruot = in_data[:, 10]
     tongsvtruot = np.sum(svtruot)
     result_text.insert(END, "Tổng số sinh viên trượt môn:")
@@ -27,7 +60,7 @@ def sosinhvientruot():
     categories1 = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9']
     values1 = in_data[:, 10]
 
-    plt.figure(1)
+    plt.figure(2)
     plt.bar(categories1, values1, color='red', label="Sinh viên trượt")
     plt.title('Biểu đồ số sinh viên trượt của các lớp')
     plt.ylabel('Số sinh viên')
@@ -36,18 +69,19 @@ def sosinhvientruot():
 
 
 def sosinhviendat():
+
     sv = in_data[:, 1]
     tongsv = np.sum(sv)
     svtruot = in_data[:, 10]
     tongsvtruot = np.sum(svtruot)
     tongsvdat = tongsv - tongsvtruot
-    result_text.insert(END, "Tổng số sinh viên qua môn:")
-    result_text.insert(END, str(tongsvdat) + "\n\n")
+    result_text.insert(END, "Tổng số sinh viên qua môn: "+str(tongsvdat) + " sinh viên \n")
+
 
     categories2 = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9']
     values2 = np.sum(in_data[0:9, 2:10], axis=1).flatten()
 
-    plt.figure(1)
+    plt.figure(3)
     plt.bar(categories2, values2, color='green', label="Sinh viên đạt")
     plt.title('Biểu đồ số sinh viên đạt của các lớp')
     plt.ylabel('Số sinh viên')
@@ -59,42 +93,49 @@ def sinhvienA():
     diemA = in_data[:, 3]
     maxa = diemA.max()
     i = np.argmax(diemA)
-    result_text.insert(END, 'Lớp có nhiều sinh viên điểm A là {0} có {1} sinh viên đạt điểm A \n'
-                       .format(in_data[i, 0], maxa))
+    result_text.insert(END, 'Lớp có nhiều sinh viên điểm A là lớp {0} có {1} sinh viên\n'.format(in_data[i, 0], maxa))
 
     categories1 = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9']
     values1 = in_data[:, 3]
 
-    plt.figure(3)
-    plt.bar(categories1, values1, label="Sinh viên đạt điểm A")
+    plt.figure(4)
+    bars = plt.bar(categories1, values1, label="Sinh viên đạt điểm A")
     plt.title('Biểu đồ số sinh viên đạt điểm A của các lớp')
     plt.ylabel('Số sinh viên')
     plt.legend(loc='upper right')
+
+    for bar, value in zip(bars, values1):
+        height = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width() / 2, height, value, ha='center', va='bottom')
+
     plt.show()
 def phodiem():
-    diemA = in_data[:, 3]
-    diemBc = in_data[:, 4]
-    diemB = in_data[:, 5]
-    diemCc = in_data[:, 6]
-    diemC = in_data[:, 7]
-    diemDc = in_data[:, 8]
-    diemD = in_data[:, 9]
-    diemF = in_data[:, 10]
-    plt.figure(2)
-    plt.plot(range(len(diemA)), diemA, 'r-', label="Diem A")
-    plt.plot(range(len(diemBc)), diemBc, 'g-', label="Diem B +")
-    plt.plot(range(len(diemB)), diemB, 'y-', label="Diem B")
-    plt.plot(range(len(diemCc)), diemCc, 'b-', label="Diem C +")
-    plt.plot(range(len(diemC)), diemC, 'o-', label="Diem C")
-    plt.plot(range(len(diemDc)), diemDc, 'k-', label="Diem D +")
-    plt.plot(range(len(diemD)), diemD, 'p-', label="Diem D")
-    plt.plot(range(len(diemF)), diemF, 'd-', label="Diem F")
-    plt.xlabel('Lơp')
-    plt.ylabel(' So sv dat diem ')
-    plt.legend(loc='upper right')
+    labels = ["A", "B+", "B", "C+", "C", "D+", "D", "F"]
+    colors = ['red', 'green', 'yellow', 'blue', 'orange', 'purple', 'pink', 'brown']
+    diems = in_data[:, 3:11]
+    total_students = diems.shape[0]
+    grade_counts = diems.sum(axis=0)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
+
+    # Bar chart
+    ax1.bar(labels, grade_counts, color=colors)
+    ax1.set_xlabel('Điểm')
+    ax1.set_ylabel('Số lượng sinh viên')
+    ax1.set_title('Phổ điểm')
+    for i, v in enumerate(grade_counts):
+        ax1.annotate(str(v), (i, v), ha='center', va='bottom')
+
+    # Pie chart
+    ax2.pie(grade_counts, labels=labels, colors=colors, autopct='%1.1f%%')
+    ax2.axis('equal')
+    ax2.set_title('Phổ điểm')
+
+    plt.tight_layout()
     plt.show()
 def reset_result():
     result_text.delete(1.0, END)
+    plt.close('all')
 
 # Tạo cửa sổ giao diện
 window = tk.Tk()
@@ -110,20 +151,21 @@ phodiem_button = tk.Button(window, text="Phổ điểm", command=phodiem)
 reset_button = tk.Button(window, text="Reset", command=reset_result)
 
 # Tạo ô văn bản để hiển thị kết quả
-result_text = Text(window, wrap="word", height=15, width=100)
+result_text = Text(window, wrap="word", height=20, width=200)
 result_text_scrollbar = Scrollbar(window, command=result_text.yview)
 result_text.config(yscrollcommand=result_text_scrollbar.set)
 
 # Đặt vị trí các phần tử trên cửa sổ
-htdanhsach_button.pack()
-tongsinhvien_button.pack()
-sinhviendat_button.pack()
-sinhvientruot_button.pack()
-sinhvienA_button.pack()
-phodiem_button.pack()
-reset_button.pack()
-result_text.pack()
-result_text_scrollbar.pack(side="right", fill="y")
+htdanhsach_button.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
+tongsinhvien_button.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
+sinhvientruot_button.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
+sinhviendat_button.grid(row=3, column=0, padx=10, pady=10, sticky="ew")
+sinhvienA_button.grid(row=4, column=0, padx=10, pady=10, sticky="ew")
+phodiem_button.grid(row=5, column=0, padx=10, pady=10, sticky="ew")
+reset_button.grid(row=6, column=0, padx=10, pady=10, sticky="ew")
+result_text.grid(row=0, column=1, rowspan=7, padx=10, pady=10, sticky="nsew")
+result_text_scrollbar.grid(row=0, column=2, rowspan=7, sticky="ns")
+
 
 # Chạy ứng dụng
 window.mainloop()
