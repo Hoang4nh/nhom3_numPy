@@ -1,6 +1,4 @@
-THIẾT KẾ ỨNG DỤNG MÃ NGUỒN MỞ CHIỀU THỨ 3
-
- DANH SÁCH THÀNH VIÊN NHÓM 3 KTMT01:
+ DANH SÁCH THÀNH VIÊN NHÓM 3 :
 1. Vũ Hoàng Anh
 2. Vũ Quý Kỳ
 3. Nguyễn Xuân Chiến Công
